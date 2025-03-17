@@ -1,6 +1,6 @@
 {
     "name": "com.eu4ng.manager.data",
-    "displayName": "Data Manager",
+    "displayName": "DataManager",
     "version": "0.0.0",
     "unity": "6000.0",
     "author": {
@@ -8,8 +8,15 @@
         "email": "eu4ng97@gmail.com",
         "url": "https://github.com/Eu4ng"
     },
-    "description": "Data Manager",
+    "description": "DataManager",
     "dependencies": {
         "com.eu4ng.manager.singleton": "https://github.com/E4-Unity/com.eu4ng.manager.singleton.git?path=/package#v0.1.0"
-    }
+    },
+    "samples": [
+        {
+            "displayName": "DataManager Sample",
+            "description": "Sample assets for DataManager package",
+            "path": "Samples~/SamplesDataManager"
+        }
+    ]
 }
