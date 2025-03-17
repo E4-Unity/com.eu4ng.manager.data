@@ -283,9 +283,8 @@ namespace Eu4ng.Manager.Data
         /// 데이터 저장 폴더 비우기
         /// </summary>
 #if UNITY_EDITOR
-        [MenuItem("Tools/DataManager/Delete All")]
-#endif
-        public static void DeleteAll()
+        [MenuItem("Tools/DataManager/Delete All Save Files")]
+        public static void DeleteAllSaveFiles()
         {
             // 저장된 데이터 확인
             if (!Directory.Exists(m_SaveFolderPath)) return;
@@ -295,9 +294,12 @@ namespace Eu4ng.Manager.Data
             // 데이터 삭제
             foreach (var file in files)
             {
-                File.Delete(Path.Combine(m_SaveFolderPath, file));
+                File.Delete(file);
+
+                LogDataManager.Log(file + " is deleted.");
             }
         }
+#endif
 
         /* 메서드 */
         static string GetFileName(Type dataType) => dataType.Name + ".json";
