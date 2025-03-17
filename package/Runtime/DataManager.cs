@@ -42,7 +42,9 @@ namespace Eu4ng.Manager.Data
         static void RuntimeInit()
         {
             // 자동 저장
+#if !UNITY_EDITOR
             Application.focusChanged += OnFocusChanged_Event;
+#endif
             Application.quitting += OnQuitting_Event;
 
             // Start 이벤트 때 모든 데이터 로딩 작업 완료 보장
