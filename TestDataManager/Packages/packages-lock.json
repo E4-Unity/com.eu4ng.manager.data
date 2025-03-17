@@ -4,7 +4,16 @@
       "version": "file:../../package",
       "depth": 0,
       "source": "local",
-      "dependencies": {}
+      "dependencies": {
+        "com.eu4ng.manager.singleton": "https://github.com/E4-Unity/com.eu4ng.manager.singleton.git?path=/package#v0.1.0"
+      }
+    },
+    "com.eu4ng.manager.singleton": {
+      "version": "https://github.com/E4-Unity/com.eu4ng.manager.singleton.git?path=/package#v0.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "9f60c230f3c4fac95b3c244bd53666624b205a6f"
     },
     "com.unity.2d.animation": {
       "version": "10.1.4",

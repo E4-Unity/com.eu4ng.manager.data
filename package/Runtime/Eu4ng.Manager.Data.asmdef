@@ -1,7 +1,9 @@
 {
     "name": "Eu4ng.Manager.Data",
     "rootNamespace": "Eu4ng.Manager.Data",
-    "references": [],
+    "references": [
+        "GUID:c2becb15332ef2145b3d7c2149f8e3cb"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
