@@ -179,23 +179,13 @@ namespace Eu4ng.Manager.Data
         {
             var dataType = typeof(T);
 
-            // 기존 데이터 로딩 작업이 존재하면 완료될 때까지 대기 및 완료 후 작업 목록에서 제거
-            if (m_LoadDataTasks.TryGetValue(dataType, out var task))
-            {
-                task.Wait();
-                m_LoadDataTasks.Remove(dataType);
-
-                return (T)m_LoadedData[dataType];
-            }
-
-            // 데이터 로딩 (캐시 확인 포함)
             var loadDataTask = LoadDataAsync<T>();
             loadDataTask.Wait();
+            m_LoadDataTasks.Remove(dataType);
 
             LogDataManager.Log(dataType.Name + " is loaded");
 
-            // 로드된 데이터 반환
-            return loadDataTask.Result;
+            return (T)m_LoadedData[dataType];
         }
 
         /// <summary>
@@ -260,15 +250,13 @@ namespace Eu4ng.Manager.Data
         {
             var dataType = typeof(T);
 
-            // 데이터 저장 요청 목록에 존재하는 경우 목록에서 제거 및 저장
-            if (m_DataToSave.Contains(dataType))
-            {
-                m_DataToSave.Remove(dataType);
-                SaveDataAsync(m_LoadedData[dataType]);
-            }
+            // 데이터 저장 요청 목록에 존재하는 경우 목록에서 제거
+            if (m_DataToSave.Contains(dataType)) m_DataToSave.Remove(dataType);
 
             // 데이터 언로드
             m_LoadedData.Remove(dataType);
+
+            LogDataManager.Log(dataType.Name + " is unloaded.");
         }
 
         /// <summary>
@@ -278,12 +266,17 @@ namespace Eu4ng.Manager.Data
         {
             var dataType = typeof(T);
 
+            // 데이터 언로드
+            UnloadData<T>();
+
             // 저장된 데이터 파일이 존재하는지 확인
             var path = Path.Combine(m_SaveFolderPath, GetFileName(dataType));
             if (!File.Exists(path)) return;
 
             // 데이터 파일 삭제
             File.Delete(path);
+
+            LogDataManager.Log(dataType.Name + " is deleted.");
         }
 
         /// <summary>
