@@ -33,6 +33,10 @@ namespace Eu4ng.Manager.Data
 
         static readonly Dictionary<Type, Task> m_LoadDataTasks = new Dictionary<Type, Task>(); // LoadDataAsync 호출 시 Task 가 추가됨
 
+        /* 프로퍼티 */
+
+        static bool IsDirty() => m_DataToSave.Count > 0;
+
         /* 초기화 */
         [RuntimeInitializeOnLoadMethod]
         static void RuntimeInit()
@@ -102,6 +106,8 @@ namespace Eu4ng.Manager.Data
 
             // 저장할 데이터 목록에 추가
             m_DataToSave.Add(dataType);
+
+            LogDataManager.Log(dataType.Name + " need to be saved.");
         }
 
         /// <summary>
@@ -121,7 +127,19 @@ namespace Eu4ng.Manager.Data
         /// <summary>
         /// 저장이 필요한 모든 데이터를 동기 방식으로 저장
         /// </summary>
-        public static void SaveAll() => Task.WaitAll(SaveAllAsync());
+        public static void SaveAll()
+        {
+            if (!IsDirty())
+            {
+                LogDataManager.Log("There is no data to save.");
+
+                return;
+            }
+
+            Task.WaitAll(SaveAllAsync());
+
+            LogDataManager.Log("All data saved.");
+        }
 
         /// <summary>
         /// 저장이 필요한 모든 데이터를 비동기 방식으로 저장
@@ -129,7 +147,7 @@ namespace Eu4ng.Manager.Data
         public static Task[] SaveAllAsync()
         {
             // 요청이 존재하는지 확인
-            if (m_DataToSave.Count == 0) return new Task[]{ Task.CompletedTask };
+            if (!IsDirty()) return new Task[]{ Task.CompletedTask };
 
             // 데이터 저장 작업 리스트
             List<Task> saveDataTasks = new List<Task>(m_DataToSave.Count);
@@ -139,6 +157,8 @@ namespace Eu4ng.Manager.Data
             {
                 var saveDataTask = SaveDataAsync(m_LoadedData[dataType]);
                 saveDataTasks.Add(saveDataTask);
+
+                LogDataManager.Log(dataType.Name + " will be saved.");
             }
 
             // 저장할 데이터 목록 정리
@@ -169,6 +189,8 @@ namespace Eu4ng.Manager.Data
             // 데이터 로딩 (캐시 확인 포함)
             var loadDataTask = LoadDataAsync<T>();
             loadDataTask.Wait();
+
+            LogDataManager.Log(dataType.Name + " is loaded");
 
             // 로드된 데이터 반환
             return loadDataTask.Result;
