@@ -11,10 +11,10 @@ namespace Eu4ng.Manager.Data
 
         /* DataManagerClient */
 
-        protected void SaveData() => DataManager.SaveData<TData>();
-        protected void LoadDataAsync() => DataManager.LoadDataAsync<TData>();
-        protected void LoadData() => m_Data = DataManager.LoadData<TData>();
-        protected void UnLoadData() => DataManager.UnloadData<TData>();
+        protected virtual void SaveData() => DataManager.SaveData<TData>();
+        protected virtual void LoadDataAsync() => DataManager.LoadDataAsync<TData>();
+        protected virtual void LoadData() => m_Data = DataManager.LoadData<TData>();
+        protected virtual void UnLoadData() => DataManager.UnloadData<TData>();
 
         /* MonoSingleton */
 
