@@ -18,7 +18,10 @@ namespace Eu4ng.Manager.Data
 
         /* MonoSingleton */
 
-        protected override void OnInitialize() {}
+        protected override void OnInitialize()
+        {
+            LoadData();
+        }
 
         /* MonoBehaviour */
 
@@ -27,13 +30,6 @@ namespace Eu4ng.Manager.Data
             base.Awake();
 
             LoadDataAsync();
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-
-            LoadData();
         }
 
         protected override void OnDestroy()
